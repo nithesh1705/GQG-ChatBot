@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import InputControl from "../../components/InputControl/InputControl";
+import InputControlPassword from "../../components/InputControl/InputControlPassword";
 import styles from "./LogIn.module.css";
 import { ThreeCircles } from "react-loader-spinner";
 
@@ -94,7 +95,7 @@ const LogIn = () => {
                 }
                 placeholder="Enter email address"
               />
-              <InputControl
+              <InputControlPassword
                 label="Password"
                 value={values.pass}
                 onChange={(event) =>

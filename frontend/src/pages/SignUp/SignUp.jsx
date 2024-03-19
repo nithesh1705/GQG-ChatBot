@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./SignUp.module.css";
 import { auth } from "../../firebase";
 import InputControl from "../../components/InputControl/InputControl";
+import InputControlPassword from "../../components/InputControl/InputControlPassword";
 import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { ThreeCircles } from "react-loader-spinner";
@@ -115,7 +116,7 @@ const SignUp = () => {
                 setValues((prev) => ({ ...prev, email: event.target.value }))
               }
             />
-            <InputControl
+            <InputControlPassword
               label="Password"
               placeholder="Enter password"
               value={values.pass}
