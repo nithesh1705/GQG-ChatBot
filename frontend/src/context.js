@@ -15,7 +15,7 @@ const AppProvider = ({ children }) => {
 
   const handleSubmission = async () => {
     if (!messageText.trim() || processing) return;
-
+  
     const tempMessages = [
       ...messages,
       {
@@ -23,42 +23,41 @@ const AppProvider = ({ children }) => {
         text: messageText,
       },
     ];
-
+  
     setMessages(tempMessages);
     setMessageText("");
-
+  
     setTimeout(() =>
       lastMsg.current.scrollIntoView({
         behavior: "smooth",
       })
     );
-
+  
     try {
       setProcessing(true);
-      const res = await fetch(`http://localhost:5500`, {
+      const res = await fetch(`http://localhost:8000/ask`, {
         method: "POST",
         headers: {
-          "content-type": "application/json",
+          "Content-Type": "application/json", // Specify JSON content type
         },
         body: JSON.stringify({
-          messages: tempMessages.slice(-8),
+          question: messageText, // Include the question key here
         }),
       });
       setProcessing(false);
-
-      const data = await res.json();
-      // console.log(data);
-      const ans = data.data;
-
+  
+      const data = await res.text(); // Assuming API returns plain text
+      const ans = data.trim();
+  
       setMessages((prev) => [
         ...prev,
         {
           from: "ai",
-          text: ans.trim(),
+          text: ans,
         },
       ]);
     } catch (err) {
-      const error = "Error Proceesing this message. Please try in sometime";
+      const error = "Error Processing this message. Please try again later";
       setMessages((prev) => [
         ...prev,
         {
@@ -67,14 +66,14 @@ const AppProvider = ({ children }) => {
         },
       ]);
     }
-
+  
     setTimeout(() =>
       lastMsg.current.scrollIntoView({
         behavior: "smooth",
       })
     );
   };
-
+  
   return (
     <AppContext.Provider
       value={{

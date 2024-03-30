@@ -1,6 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
-from controller import get_answer, translate
+from controllerGEM import get_answer
 from schema import question, translating
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -22,9 +22,9 @@ def working():
 def askQuestion(ques:question):
     return get_answer(ques.question)
 
-@app.post('/translate')
-def translater(translating: translating):
-    return translate(translating.sentence,translating.code)
+# @app.post('/translate')
+# def translater(translating: translating):
+#     return translate(translating.sentence,translating.code)
 
 if '__main__'==__name__:
     uvicorn.run(

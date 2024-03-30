@@ -12,41 +12,32 @@ const Body = () => {
       {messages.map((msg, index) => (
         <div
           className={`${styles.message} ${
-            msg.from == "ai" ? styles.mLeft : styles.mRight
+            msg.from === "ai" ? styles.mLeft : styles.mRight
           }`}
           key={index}
         >
-          {msg.from == "ai" ? (
-            <div>
-              <div className={styles.image}>
-                <img src={chatbot} alt="AI" />
-              </div>
+          {msg.from === "ai" && (
+            <div className={styles.image}>
+              <img src={chatbot} alt="AI" />
             </div>
-          ) : (
-            ""
           )}
           
-          <p className={styles.text}>{msg.text}</p>
-          {msg.from != "ai" ? (
-            <div>
-              <div className={styles.image}>
-                <img src={user} alt="user" />
-              </div>
+          <p className={styles.text} style={{ whiteSpace: 'pre-line' }}>{msg.text}</p>
+          
+          {msg.from !== "ai" && (
+            <div className={styles.image}>
+              <img src={user} alt="user" />
             </div>
-          ) : (
-            ""
           )}
         </div>
       ))}
 
-      {processing ? (
+      {processing && (
         <div className={styles.typing}>
           <div className={styles.dot} />
           <div className={styles.dot} />
           <div className={styles.dot} />
         </div>
-      ) : (
-        ""
       )}
 
       <div ref={lastMsg} />

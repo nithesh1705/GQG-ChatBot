@@ -3,3 +3,4 @@ pydantic
 spacy
 translate
 uvicorn
+google-generativeai

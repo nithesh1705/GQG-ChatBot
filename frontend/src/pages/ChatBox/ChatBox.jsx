@@ -11,6 +11,8 @@ import { Link } from "react-router-dom";
 const ChatBox = (props) => {
   const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [responseData, setResponseData] = useState(null);
+
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
@@ -27,6 +29,25 @@ const ChatBox = (props) => {
     });
   }, []);
 
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("http://127.0.0.1:8000/ask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ question : "question" }),
+      });
+      const data = await response.json();
+      setResponseData(data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+
   const signOutHandler = () => {
     signOut(auth)
       .then(() => {
@@ -36,6 +57,10 @@ const ChatBox = (props) => {
         console.log(err.message);
       });
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -54,11 +79,7 @@ const ChatBox = (props) => {
           <div className={styles.container}>
             <div className={`${styles.header} ${styles.item}`}>
               <h2>Hey, {userName === "" ? "User" : `${props.name}`} </h2>
-              <Link
-                to="/home"
-              >
-                Return to Home
-              </Link>
+              <Link to="/home">Return to Home</Link>
               <Link
                 to="/login"
                 activeClassName={styles.active}
@@ -69,7 +90,7 @@ const ChatBox = (props) => {
               </Link>
             </div>
             <Title />
-            <Body />
+            <Body responseData={responseData} />
             <InputBar />
           </div>
         </div>
